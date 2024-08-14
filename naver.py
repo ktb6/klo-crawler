@@ -39,9 +39,6 @@ def generate_naver_map_search_url(query):
     encoded_query = urllib.parse.quote(remove_html_tags(query))
     return f"{base_url}{encoded_query}"
 
-
-
-
 def main():
     restaurants = kakao.main()
 

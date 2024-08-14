@@ -39,20 +39,35 @@ def generate_naver_map_search_url(query):
     encoded_query = urllib.parse.quote(remove_html_tags(query))
     return f"{base_url}{encoded_query}"
 
-restaurants = kakao.main()
 
-if restaurants:
-    for restaurant in restaurants:
-        address_name = restaurant['address_name']
-        road_address_name = restaurant['road_address_name']
 
-        name = restaurant['name']
-        places = search_place(f'{address_name}, {name}')
-        if places:
-            print(address_name, name)
-            print('naver url:', generate_naver_map_search_url(f'{address_name} {places[0]["title"]}'))
-            print('kakao url:', restaurant['place_url'])
-        else:
-            print(f"'{address_name}, {name}'에 대한 네이버 검색 결과가 없습니다.")
-else:
-    print("카카오 API에서 검색된 레스토랑이 없습니다.")
+
+def main():
+    restaurants = kakao.main()
+
+    if restaurants:
+        result = []
+        for restaurant in restaurants:
+            address_name = restaurant['address_name']
+            road_address_name = restaurant['road_address_name']
+
+            name = restaurant['name']
+            places = search_place(f'{address_name}, {name}')
+
+            if places:
+                result.append({
+                    'address': f'{address_name}, {name}',
+                    'name': name,
+                    'distance': restaurant['distance'],
+                    'naver_url': generate_naver_map_search_url(f'{address_name} {places[0]["title"]}'),
+                    'kakao url': restaurant['place_url'],
+                })
+            else:
+                print(f"'{address_name}, {name}'에 대한 네이버 검색 결과가 없습니다.")
+        return result
+    else:
+        print("카카오 API에서 검색된 레스토랑이 없습니다.")
+
+if __name__ == "__main__":
+    main()
+

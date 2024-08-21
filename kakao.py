@@ -7,8 +7,8 @@ load_dotenv()
 KAKAO_API_KEY = os.getenv('KAKAO_API_KEY')
 
 def calculate_distance(lat1, lon1, lat2, lon2):
-    R = 6371.0  
-
+    R = 6371.0
+    
     dlat = radians(lat2 - lat1)
     dlon = radians(lon2 - lon1)
 
